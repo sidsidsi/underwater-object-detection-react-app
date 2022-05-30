@@ -1,10 +1,9 @@
 # TensorFlow Underwater Object Detection React Application
-<p>**Task Description**: Train a custom object detection model using the TensorFlow object detection API and deploy the model to the web. Identify and label the marine-growth and anomaly in the [video](https://drive.google.com/file/d/1NMjH0EXd_IBsX1euRkyohxS8zMhpiS9O/view) provided.
-<img src="">
+<p>**Task Description**: Train a custom object detection model using the TensorFlow object detection API and deploy the model to the web. Identify and label the marine-growth and anomaly in the link (https://drive.google.com/file/d/1NMjH0EXd_IBsX1euRkyohxS8zMhpiS9O/view) provided.
 
 ## Steps
 <br />
-<b>Step 1.</b> Clone this [repository](https://www.google.com/)
+<b>Step 1.</b> Clone this repository (https://github.com/sidsidsi/underwater-object-detection-react-app)
 <br/><br/>
 <b>Step 2.</b> Include the video file inside the *src* folder.
 <br/><br/>
