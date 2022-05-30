@@ -11,7 +11,11 @@
 <br/><br/>
 <b>Step 4.</b> Install App Depdendencies 
 <pre>npm install</pre>
-<b>Step 5.</b> Start the app by running npm start.</a> 
+<b>Step 5.</b> Install the http server.</a> 
+<pre>npm install http-server -g</pre>
+<b>Step 6.</b> Go to models and run the command below to make the model available locally</a> 
+<pre>http-server -c1 --cors .</pre>
+<b>Step 7.</b> Start the app by running npm start.</a> 
 <pre>npm start</pre>
 <br/><br/>
 
