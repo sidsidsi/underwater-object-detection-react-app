@@ -15,20 +15,9 @@ function App() {
     // Check if video is loaded
     const videoElement = document.getElementById("video");
       if(videoElement.readyState >= 3){
-        // Get Video Properties
-        //const video = videoRef.current.video;
+        // Set Video Properties
         const videoWidth = 640;
         const videoHeight = 480;
-          // const videoWidth = videoRef.current.video.videoWidth;
-          // const videoHeight = videoRef.current.video.videoHeight;
-        
-          // Set video width
-          // videoRef.current.video.width = videoWidth;
-          // videoRef.current.video.height = videoHeight;
-        
-        // Set canvas height and width
-          // canvasRef.current.width = videoWidth;
-          // canvasRef.current.height = videoHeight;
 
         // Make Detections
         const img = tf.browser.fromPixels(document.getElementById("video"))
@@ -38,7 +27,7 @@ function App() {
         const obj = await net.executeAsync(expanded)
 
         /* Debugging Detection 
-        [0] - Box valuesd [x,y, height, width]
+        [0] - Box values [x,y, height, width]
         [2] - Non-post Process Box Classes
         [3] - Actual Box/Label Classes
         [5] - Count of Objects Detected
@@ -56,76 +45,111 @@ function App() {
         // Update drawing utility for instance, drawSomething(obj, ctx)  
         requestAnimationFrame(()=>{drawRect(boxes[0], classes[0], scores[0], 0.6, videoWidth, videoHeight, ctx)}); 
         
+        //reset drawing
+        //var canvas = document.getElementById('myCanvas');
+        ctx.clearRect(0, 0, 854, 480);
+
         tf.dispose(img)
         tf.dispose(resized)
         tf.dispose(casted)
         tf.dispose(expanded)
         tf.dispose(obj)
-
       }
+
   }
 
   useEffect(()=>{
     // Main function
     const runModel = async () => {
       // Load model network 
-      const net = await loadGraphModel('http://192.168.1.2:8080/model.json');
+      const net = await loadGraphModel('http://192.168.18.61:8080/model.json');
       //const net = await tf.loadGraphModel('https://github.com/sidsidsi/underwater-object-detection-initial/blob/main/content/inference_graph/web_model/model.json')
       console.log('model loaded');
 
       // Loop for detection
       setInterval(() => {
         detect(net);
-      }, 16.7);
+      }, 5);
     };
     runModel();
   }, []);
 
   return (
-    <div className="App">
-      <section class="title">
-        <h1>🤿 UNDERWATER OBJECT DETECTION</h1>
-      </section>  
-      <p>A React web app that identifies and labels the <b>marine-growth</b> and <b>anomaly</b> present in the video using the custome trained <b>SSD MobileNet v2 320x320</b>.
-      </p>
-      <header className="App-header">
-        <video
-          id="video"
-          src={videoSource}
-          type="video/mp4"
-          autoPlay
-          ref={videoRef}
-          muted={true}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 854,
-            height: 480,
-          }}
-        />
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 8,
-            width: 854,
-            height: 480,
-          }}
-        />
-      </header>
-      <footer>
-        <p>John Cedric P. Miguel ©️ CAWIL.ai</p>
-      </footer>
+    <div class="row no-gutters">
+        <div class="col-md-4 no-gutters">
+            <div class="leftside">
+              <div id="logo"> 
+              <img src="https://i.postimg.cc/zBv8ftv8/cawilai-logo.png" alt="" /> 
+              </div>
+              <section class="header">
+              <h1>UNDERWATER</h1>
+              </section>
+              <section class="subtitle">
+              <h2>Object Detection</h2>
+              </section>
+              <section class="description">
+              <h5>300+ images were trained for the <i><b>SSD MobileNet v2 320x320</b></i> model using the <b>TensorFlow Object Detection API</b>.</h5>
+              <br></br>
+              <br></br>
+              <br></br>
+              <h5>The expected results are the following:</h5>
+              </section>
+
+              <div id="sqr-green">
+              <h4 id="result-one">marine-growth</h4>
+              </div>
+              <div id="sqr-red">
+              <h4 id="result-two">anomaly</h4>
+              </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-8 no-gutters">
+            <div class="rightside">
+              <div className="videoPlayer">
+                <video
+                  id="video"
+                  src={videoSource}
+                  type="video/mp4"
+                  autoPlay
+                  ref={videoRef}
+                  muted={true}
+                  style={{
+                    borderRadius: 20,
+                    position: "absolute",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    top:170,
+                    left: 0,
+                    right: 0,
+                    textAlign: "center",
+                    zindex: 9,
+                    width: 854,
+                    height: 480,
+                  }}
+                />
+                <canvas
+                  ref={canvasRef}
+                  style={{
+                    borderRadius: 20,
+                    position: "absolute",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    top:170,
+                    left: 0,
+                    right: 0,
+                    textAlign: "center",
+                    zindex: 8,
+                    width: 854,
+                    height: 480,
+                  }}
+                />
+              </div>
+              <a href="https://drive.google.com/drive/folders/1jtTjwg24HMTaH15qxpBXCKS_kD1SCL2s?usp=sharing"><span role="img" aria-labelledby="folder">📂</span>Dataset</a>
+
+            </div>
+          </div>
     </div>
   );
 }
