@@ -3,9 +3,9 @@ import React, { useRef, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 //import Video from "react-video";
 import "./App.css";
-import videoSource from "./ShipHull.mp4"; // Import video source file
+import videoSource from "./underwater.mp4"; // Import video source file
 import {drawRect} from "./utilities"; // Import drawing utility here
-import { loadGraphModel } from "@tensorflow/tfjs";
+import { loadGraphModel} from "@tensorflow/tfjs";
 
 function App() {
   const videoRef = useRef(null);
@@ -20,11 +20,14 @@ function App() {
         const videoHeight = 480;
 
         // Make Detections
+        const detections = tf.tidy (() => {
         const img = tf.browser.fromPixels(document.getElementById("video"))
         const resized = tf.image.resizeBilinear(img, [640,480])
         const casted = resized.cast('int32')
         const expanded = casted.expandDims(0)
-        const obj = await net.executeAsync(expanded)
+        return expanded;
+        });
+        const obj = await net.executeAsync(detections)
 
         /* Debugging Detection 
         [0] - Box values [x,y, height, width]
@@ -35,9 +38,9 @@ function App() {
         */
         console.log(await obj[6].array())
               
-        const boxes = await obj[0].array()
-        const classes = await obj[3].array()
-        const scores = await obj[6].array()
+        const boxes = await obj[4].array()
+        const classes = await obj[2].array()
+        const scores = await obj[5].array()
             
         // Draw mesh
         const ctx = canvasRef.current.getContext("2d");
@@ -49,13 +52,11 @@ function App() {
         //var canvas = document.getElementById('myCanvas');
         ctx.clearRect(0, 0, 854, 480);
 
-        tf.dispose(img)
-        tf.dispose(resized)
-        tf.dispose(casted)
-        tf.dispose(expanded)
+        tf.dispose(detections)
         tf.dispose(obj)
+        tf.dispose(net)
+        console.log (tf.memory())
       }
-
   }
 
   useEffect(()=>{
@@ -69,9 +70,10 @@ function App() {
       // Loop for detection
       setInterval(() => {
         detect(net);
-      }, 5);
+      }, 16.7);
     };
     runModel();
+
   }, []);
 
   return (

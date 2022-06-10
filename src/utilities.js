@@ -1,7 +1,7 @@
 // Define our labelmap
 const labelMap = {
-    1:{name:'marine-growth', color:'green'},
-    2:{name:'anomaly', color:'red'},
+    1:{name:'anomaly', color:'red'},
+    2:{name:'marine-growth', color:'green'},
 }
 
 // Define a drawing function
